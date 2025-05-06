@@ -1,18 +1,11 @@
-FROM node:20-bullseye-slim
+FROM n8nio/n8n:1.91.2
 
 USER root
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y ffmpeg curl git python3 build-essential
+# Install ffmpeg at build time
+RUN apk update && apk add --no-cache ffmpeg
 
-# Install n8n globally
-RUN npm install -g n8n
+# Fix PATH for restricted shells (like Execute Command)
+RUN ln -s /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
-# Switch to existing non-root user
 USER node
-
-ENV N8N_HOST=0.0.0.0
-ENV N8N_PORT=5678
-EXPOSE 5678
-
-CMD ["n8n"]
