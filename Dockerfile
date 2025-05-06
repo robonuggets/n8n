@@ -1,19 +1,7 @@
-FROM node:18-bullseye-slim
+FROM n8nio/n8n:1.91.2-debian
 
-# Install dependencies
-RUN apt-get update && apt-get install -y ffmpeg curl gnupg git python3 build-essential
+USER root
 
-# Set working directory
-WORKDIR /home/node
+RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
 
-# Use existing non-root user
 USER node
-
-# Install n8n
-RUN npm install n8n
-
-ENV N8N_HOST=0.0.0.0
-ENV N8N_PORT=5678
-EXPOSE 5678
-
-CMD ["n8n"]
