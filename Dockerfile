@@ -3,12 +3,13 @@ FROM node:18-bullseye-slim
 # Install dependencies
 RUN apt-get update && apt-get install -y ffmpeg curl gnupg git python3 build-essential
 
-# Create n8n user and working directory
-RUN useradd -m -s /bin/bash node
+# Set working directory
 WORKDIR /home/node
 
-# Install n8n
+# Use existing non-root user
 USER node
+
+# Install n8n
 RUN npm install n8n
 
 ENV N8N_HOST=0.0.0.0
