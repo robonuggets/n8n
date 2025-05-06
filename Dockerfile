@@ -1,18 +1,15 @@
-FROM node:18-bullseye-slim
+FROM node:20-bullseye-slim
 
 USER root
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y ffmpeg curl git python3 build-essential
 
-# Create app folder and user
-RUN mkdir -p /home/node && chown -R node:node /home/node
-WORKDIR /home/node
+# Install n8n globally (while still root!)
+RUN npm install -g n8n
 
+# Create a safe user and switch to it
+RUN useradd -m node
 USER node
-
-# Install n8n
-RUN npm install n8n --location=global
 
 ENV N8N_HOST=0.0.0.0
 ENV N8N_PORT=5678
